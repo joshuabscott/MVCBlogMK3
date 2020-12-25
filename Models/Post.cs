@@ -9,30 +9,34 @@ namespace MVCBlogMK3.Models
     {
         //The actual post written about a topic or what ever
         public int Id { get; set; }
-        public int BlogId { get; set; }
+        public int BlogId { get; set; } //Foreign Key to Parent
 
         public string Title { get; set; }
         public string Abstract { get; set; }
-
         public string Content { get; set; }
+
+        public string Slug { get; set; } //Use the Title to Identiy instead of the Id, will cover - ?? //routing engine and SEO??
+
         public byte[] Image { get; set; }
         public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }
 
+        public bool IsPublished { get; set; }
+
         //In Microsoft documentation this is written public Type type
-        public Blog Blog { get; set; }
+        public virtual Blog Blog { get; set; }
 
         //In Microsoft docs this is public List<Type> Type
-        public List<Comment> Comments { get; set; }
-        public List<Tag> Tags { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Tag> Tags { get; set; }
 
         //This tells the code to do what I type:
         //var post = Post();
         //We do this so the lists exist from the start and can have records added later
         public Post()
         {
-            Comments = new List<Comment>();
-            Tags = new List<Tag>();
+            Comments = new HashSet<Comment>();
+            Tags = new HashSet<Tag>();
         }
     }
 }

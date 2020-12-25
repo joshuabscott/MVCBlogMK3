@@ -13,7 +13,7 @@ namespace MVCBlogMK3.Models
         public string Url { get; set; }
 
         //public List<Post> Posts { get; set; }
-        public ICollection<Post> Posts { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
 
         public Blog()
         {

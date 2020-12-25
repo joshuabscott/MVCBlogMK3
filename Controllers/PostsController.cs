@@ -53,14 +53,15 @@ namespace MVCBlogMK3.Controllers
         }
 
         // POST: Posts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // To protect from over-posting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BlogId,Title,Abstract,Content,Image,Created,Updated")] Post post)
+        public async Task<IActionResult> Create([Bind("Id,BlogId,Title,Abstract,Content,Slug,Image,Created,Updated,IsPublished")] Post post)
         {
             if (ModelState.IsValid)
             {
+                post.Created = DateTime.Now; //Add Line
                 _context.Add(post);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -87,11 +88,11 @@ namespace MVCBlogMK3.Controllers
         }
 
         // POST: Posts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // To protect from over-posting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,Image,Created,Updated")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,Slug,Image,Created,Updated,IsPublished")] Post post)
         {
             if (id != post.Id)
             {
@@ -102,6 +103,7 @@ namespace MVCBlogMK3.Controllers
             {
                 try
                 {
+                    post.Updated = DateTime.Now; //add line
                     _context.Update(post);
                     await _context.SaveChangesAsync();
                 }

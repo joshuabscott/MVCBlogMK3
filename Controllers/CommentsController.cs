@@ -22,7 +22,7 @@ namespace MVCBlogMK3.Controllers
         // GET: Comments
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Comment.Include(c => c.Author).Include(c => c.Post);
+            var applicationDbContext = _context.Comment.Include(c => c.BlogUser).Include(c => c.Post);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace MVCBlogMK3.Controllers
             }
 
             var comment = await _context.Comment
-                .Include(c => c.Author)
+                .Include(c => c.BlogUser)
                 .Include(c => c.Post)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (comment == null)
@@ -49,8 +49,8 @@ namespace MVCBlogMK3.Controllers
         // GET: Comments/Create
         public IActionResult Create()
         {
-            ViewData["AuthorId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id");
-            ViewData["PostId"] = new SelectList(_context.Set<Post>(), "Id", "Id");
+            ViewData["BlogUserId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id");
+            ViewData["PostId"] = new SelectList(_context.Post, "Id", "Id");
             return View();
         }
 
@@ -59,7 +59,7 @@ namespace MVCBlogMK3.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PostId,AuthorId,Content,Created,Updated")] Comment comment)
+        public async Task<IActionResult> Create([Bind("Id,PostId,BlogUserId,Content,Created,Updated")] Comment comment)
         {
             if (ModelState.IsValid)
             {
@@ -67,8 +67,8 @@ namespace MVCBlogMK3.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id", comment.AuthorId);
-            ViewData["PostId"] = new SelectList(_context.Set<Post>(), "Id", "Id", comment.PostId);
+            ViewData["BlogUserId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id", comment.BlogUserId);
+            ViewData["PostId"] = new SelectList(_context.Post, "Id", "Id", comment.PostId);
             return View(comment);
         }
 
@@ -85,8 +85,8 @@ namespace MVCBlogMK3.Controllers
             {
                 return NotFound();
             }
-            ViewData["AuthorId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id", comment.AuthorId);
-            ViewData["PostId"] = new SelectList(_context.Set<Post>(), "Id", "Id", comment.PostId);
+            ViewData["BlogUserId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id", comment.BlogUserId);
+            ViewData["PostId"] = new SelectList(_context.Post, "Id", "Id", comment.PostId);
             return View(comment);
         }
 
@@ -95,7 +95,7 @@ namespace MVCBlogMK3.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PostId,AuthorId,Content,Created,Updated")] Comment comment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,PostId,BlogUserId,Content,Created,Updated")] Comment comment)
         {
             if (id != comment.Id)
             {
@@ -122,8 +122,8 @@ namespace MVCBlogMK3.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id", comment.AuthorId);
-            ViewData["PostId"] = new SelectList(_context.Set<Post>(), "Id", "Id", comment.PostId);
+            ViewData["BlogUserId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id", comment.BlogUserId);
+            ViewData["PostId"] = new SelectList(_context.Post, "Id", "Id", comment.PostId);
             return View(comment);
         }
 
@@ -136,7 +136,7 @@ namespace MVCBlogMK3.Controllers
             }
 
             var comment = await _context.Comment
-                .Include(c => c.Author)
+                .Include(c => c.BlogUser)
                 .Include(c => c.Post)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (comment == null)

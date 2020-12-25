@@ -56,11 +56,11 @@ namespace MVCBlogMK3.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Url")] Blog blog)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid)  //checks if constraints are meet before allowing any further code to run. special characters, length, ect.
             {
-                _context.Add(blog);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                _context.Add(blog); //adds an instance of blog to _context which is the Dbset in ApplicationDbContext
+                await _context.SaveChangesAsync();  //persists data to the tables where ever you are storing them. Local SQL or On Web Heroku/Docker Contanier
+                return RedirectToAction(nameof(Index));  //Take to Index Action Below, generate new post?
             }
             return View(blog);
         }

@@ -9,9 +9,9 @@ namespace MVCBlogMK3.Models
     {
         //Hashtags for search I think? 
         public int Id { get; set; }
-        public int PostId { get; set; }
+        public int PostId { get; set; }  //Foreign Key to Parent
         // treat this as a look up table
         public string Name { get; set; }
-        public Post Post { get; set; }
+        public virtual Post Post { get; set; }
     }
 }

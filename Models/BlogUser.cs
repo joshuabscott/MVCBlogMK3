@@ -24,11 +24,11 @@ namespace MVCBlogMK3.Models
 
         public string DisplayName { get; set; }
         //public List<Comment> Comments { get; set; } = new List<Comment>(); //instantiation instead of in the constructor
-        public List<Comment> Comments { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
 
         public BlogUser()
         {
-            Comments = new List<Comment>();
+            Comments = new HashSet<Comment>();
             DisplayName = "New User";
             //this.
         }
