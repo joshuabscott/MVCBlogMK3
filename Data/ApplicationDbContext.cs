@@ -7,15 +7,17 @@ using MVCBlogMK3.Models;
 
 namespace MVCBlogMK3.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<BlogUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
-        public DbSet<Blog> Blog { get; set; }
-        public DbSet<Comment> Comment { get; set; }
-        public DbSet<Post> Post { get; set; }
-        public DbSet<Tag> Tag { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
+        public DbSet<BlogUser> BlogUsers { get; set; }
+
+        public DbSet<Comment> Comments{ get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Tag> Tags { get; set; }
     }
 }

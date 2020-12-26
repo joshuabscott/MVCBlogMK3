@@ -12,6 +12,6 @@ namespace MVCBlogMK3.Models
         public int PostId { get; set; }  //Foreign Key to Parent
         // treat this as a look up table
         public string Name { get; set; }
-        public virtual Post Post { get; set; }
+        public virtual Post Posts { get; set; }
     }
 }

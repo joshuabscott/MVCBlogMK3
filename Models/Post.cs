@@ -15,6 +15,7 @@ namespace MVCBlogMK3.Models
         public string Abstract { get; set; }
         public string Content { get; set; }
 
+        public string FileName { get; set; } //-> You will need to do Add-Migration & Update-Database
         public string Slug { get; set; } //Use the Title to Identiy instead of the Id, will cover - ?? //routing engine and SEO??
 
         public byte[] Image { get; set; }
@@ -24,7 +25,7 @@ namespace MVCBlogMK3.Models
         public bool IsPublished { get; set; }
 
         //In Microsoft documentation this is written public Type type
-        public virtual Blog Blog { get; set; }
+        public virtual Blog Blogs { get; set; }
 
         //In Microsoft docs this is public List<Type> Type
         public virtual ICollection<Comment> Comments { get; set; }

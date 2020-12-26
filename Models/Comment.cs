@@ -18,7 +18,7 @@ namespace MVCBlogMK3.Models
         public DateTime? Updated { get; set; }
 
         //Type Post of post
-        public virtual Post Post { get; set; }
+        public virtual Post Posts { get; set; }
         //Type BlogUser of Author called BlogUser
         public virtual BlogUser BlogUser { get; set; }
        

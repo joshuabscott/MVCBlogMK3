@@ -22,7 +22,7 @@ namespace MVCBlogMK3.Controllers
         // GET: Blogs
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Blog.ToListAsync());
+            return View(await _context.Blogs.ToListAsync());
         }
 
         // GET: Blogs/Details/5
@@ -33,7 +33,7 @@ namespace MVCBlogMK3.Controllers
                 return NotFound();
             }
 
-            var blog = await _context.Blog
+            var blog = await _context.Blogs
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (blog == null)
             {
@@ -56,11 +56,11 @@ namespace MVCBlogMK3.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Url")] Blog blog)
         {
-            if (ModelState.IsValid)  //checks if constraints are meet before allowing any further code to run. special characters, length, ect.
+            if (ModelState.IsValid)
             {
-                _context.Add(blog); //adds an instance of blog to _context which is the Dbset in ApplicationDbContext
-                await _context.SaveChangesAsync();  //persists data to the tables where ever you are storing them. Local SQL or On Web Heroku/Docker Contanier
-                return RedirectToAction(nameof(Index));  //Take to Index Action Below, generate new post?
+                _context.Add(blog);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
             return View(blog);
         }
@@ -73,7 +73,7 @@ namespace MVCBlogMK3.Controllers
                 return NotFound();
             }
 
-            var blog = await _context.Blog.FindAsync(id);
+            var blog = await _context.Blogs.FindAsync(id);
             if (blog == null)
             {
                 return NotFound();
@@ -124,7 +124,7 @@ namespace MVCBlogMK3.Controllers
                 return NotFound();
             }
 
-            var blog = await _context.Blog
+            var blog = await _context.Blogs
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (blog == null)
             {
@@ -139,15 +139,15 @@ namespace MVCBlogMK3.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var blog = await _context.Blog.FindAsync(id);
-            _context.Blog.Remove(blog);
+            var blog = await _context.Blogs.FindAsync(id);
+            _context.Blogs.Remove(blog);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool BlogExists(int id)
         {
-            return _context.Blog.Any(e => e.Id == id);
+            return _context.Blogs.Any(e => e.Id == id);
         }
     }
 }

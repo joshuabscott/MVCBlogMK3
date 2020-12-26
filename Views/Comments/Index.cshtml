@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<MVCBlogMK3.Models.Comment>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Comment";
 }
 
-<h1>Index</h1>
+<h1>Comment</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -22,7 +22,7 @@
                 @Html.DisplayNameFor(model => model.Updated)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Post)
+                @Html.DisplayNameFor(model => model.Posts)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.BlogUser)
@@ -43,7 +43,7 @@
                 @Html.DisplayFor(modelItem => item.Updated)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Post.Id)
+                @Html.DisplayFor(modelItem => item.Posts.Id)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.BlogUser.Id)

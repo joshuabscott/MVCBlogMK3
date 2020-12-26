@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<MVCBlogMK3.Models.Tag>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Tag";
 }
 
-<h1>Index</h1>
+<h1>Tag</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -16,7 +16,7 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Post)
+                @Html.DisplayNameFor(model => model.Posts)
             </th>
             <th></th>
         </tr>
@@ -28,7 +28,7 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Post.Id)
+                @Html.DisplayFor(modelItem => item.Posts.Id)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
