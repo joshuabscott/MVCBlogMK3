@@ -37,7 +37,7 @@ namespace MVCBlogMK3.Areas.Identity.Pages.Account
             _emailSender = emailSender;
         }
 
-        [BindProperty]
+        [BindProperty] //Bind the input model with these properties of INput, Return Url and ExternalLogins
         public InputModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
@@ -47,12 +47,26 @@ namespace MVCBlogMK3.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            [StringLength(50, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; } //Matches the BlogUser Model
+
+            [Required]
+            [StringLength(50, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }  //Matches the BlogUser Model
+
+            [StringLength(50, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+            [Display(Name = "Display Name")]
+            public string DisplayName { get; set; } //Matches the BlogUser Model
+            //
+            [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(50, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
@@ -61,6 +75,7 @@ namespace MVCBlogMK3.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -75,7 +90,12 @@ namespace MVCBlogMK3.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new BlogUser { UserName = Input.Email, Email = Input.Email };
+                var user = new BlogUser { UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName, DisplayName = Input.DisplayName };
+                //if (!String.IsNullOrWhiteSpace(Input.DisplayName))
+                //{
+                //
+                //}
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
