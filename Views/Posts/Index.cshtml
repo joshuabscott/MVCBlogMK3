@@ -52,7 +52,8 @@
                 @Html.DisplayFor(modelItem => item.Abstract)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Content)
+                @*@Html.DisplayFor(modelItem => item.Content)*@
+                @Html.Raw(item.Content) @*//change for TinyMCE to take care of this area*@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Slug)
