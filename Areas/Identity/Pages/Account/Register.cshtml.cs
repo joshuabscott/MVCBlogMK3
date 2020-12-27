@@ -84,13 +84,20 @@ namespace MVCBlogMK3.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null) //The Razor page works by accessing the code on its own.cs This is where Register.cshtml comes when you click the button
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new BlogUser { UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName, DisplayName = Input.DisplayName };
+                var user = new BlogUser {
+                   FirstName = Input.FirstName,
+                   LastName = Input.LastName,
+                   DisplayName = Input.DisplayName,
+                   UserName = Input.Email,
+                   Email = Input.Email,
+                };
+
                 //if (!String.IsNullOrWhiteSpace(Input.DisplayName))
                 //{
                 //

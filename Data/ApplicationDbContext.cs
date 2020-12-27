@@ -7,7 +7,7 @@ using MVCBlogMK3.Models;
 
 namespace MVCBlogMK3.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<BlogUser>
+    public class ApplicationDbContext : IdentityDbContext<BlogUser>//Add BlogUser Step 1
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

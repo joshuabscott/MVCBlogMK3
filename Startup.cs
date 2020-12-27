@@ -8,10 +8,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MVCBlogMK3.Data;
+using MVCBlogMK3.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace MVCBlogMK3
 {
@@ -30,14 +32,18 @@ namespace MVCBlogMK3
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddIdentity</*IdentityUser*/BlogUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false) //Step 2 Add BlogUser, Identity Role
+                .AddEntityFrameworkStores<ApplicationDbContext>()                                                     //-----true = scaffolded to start, false = changed to for building?,
+                .AddDefaultUI()//Step 2 Add
+                .AddDefaultTokenProviders();//Step 2 Add
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.----------------------------------------------
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<BlogUser> userManager, RoleManager<IdentityRole> roleManager)//Step 2 Add
         {
             if (env.IsDevelopment())
             {
