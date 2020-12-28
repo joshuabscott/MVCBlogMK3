@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;  //MemoryStram
 using System.Linq;
+using System.Text.RegularExpressions; //Regex.Replace
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -71,22 +74,27 @@ namespace MVCBlogMK3.Controllers
         // GET: Posts/Create ----------------------------Heavily modified
         public IActionResult Create(int? id)
         {
-            if(id == null)// add Line
+            if (id == null)// add Line
             {
-                return NotFound();// add Line
+                ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name");// add Line
             }
-            var blog = _context.Blogs.Find(id);// add Line
-            if (blog == null)// add Line
+            else
             {
-                return NotFound();// add Line
+                var blog = _context.Blogs.Find(id);// add Line
+                if (blog == null)// add Line
+                {
+                    return NotFound();// add Line
+                }
+
+                var newPost = new Post()
+                {
+                    BlogId = (int)id  // add Line
+                };
+                ViewData["BlogName"] = blog.Name;   // add Line
+                ViewData["BlogId"] = id;           // add Line
+                return View(newPost);
             }
-            //ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Id"); we do not want writer to choose what blog this post goes to, we want it picked pragmatically
-            var newPost = new Post()
-            {
-                BlogId = (int)id  // add Line
-            };
-            ViewData["BlogName"] = blog.Name;   // add Line
-            return View(newPost);
+            return View();
         }
 
         // POST: Posts/Create
@@ -94,10 +102,25 @@ namespace MVCBlogMK3.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BlogId,Title,Abstract,Content,Slug,Image,Created,Updated,IsPublished")] Post post)
+        public async Task<IActionResult> Create([Bind("Id,BlogId,Title,Abstract,Content,Slug,Image,Created,Updated,IsPublished")] Post post, IFormFile image) //delete the Id in a create when it is scaffolded like this
         {
             if (ModelState.IsValid)
             {
+                post.Created = DateTime.Now;
+                post.Updated = DateTime.Now;
+                post.Slug = Regex.Replace(post.Title.ToLower(), @"\s", "-");
+                //Write Image
+                if(image != null)
+                {
+                    post.FileName = image.FileName;
+                    var ms = new MemoryStream();
+                    image.CopyTo(ms);
+                    post.Image = ms.ToArray();
+
+                    ms.Close();
+                    ms.Dispose();
+                }
+
                 _context.Add(post);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -124,11 +147,11 @@ namespace MVCBlogMK3.Controllers
         }
 
         // POST: Posts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // To protect from over-posting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,Slug,Image,Created,Updated,IsPublished")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,Slug,Image,Created,Updated,IsPublished")] Post post, IFormFile image) //add IformFile image
         {
             if (id != post.Id)
             {

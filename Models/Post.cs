@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,8 +16,9 @@ namespace MVCBlogMK3.Models
         public string Abstract { get; set; }
         public string Content { get; set; }
 
-        public string FileName { get; set; } //-> You will need to do Add-Migration & Update-Database
-        public string Slug { get; set; } //Use the Title to Identiy instead of the Id, will cover - ?? //routing engine and SEO??
+        [Display(Name="File Name")]
+        public string FileName { get; set; } //-> You will need to do Add-Migration & Update-Database. 10/23 Image UPloader
+        public string Slug { get; set; } //Use the Title to Identity instead of the Id, will cover - ?? //routing engine and SEO??
 
         public byte[] Image { get; set; }
         public DateTime Created { get; set; }
