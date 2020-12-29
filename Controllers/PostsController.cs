@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;  //MemoryStram
+using System.IO;  //MemoryStream
 using System.Linq;
 using System.Text.RegularExpressions; //Regex.Replace
 using System.Threading.Tasks;
@@ -52,7 +52,7 @@ namespace MVCBlogMK3.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Posts/Details/5
+        // GET: Posts/Details/5  -----------------------------------------------------------------------------
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -66,6 +66,14 @@ namespace MVCBlogMK3.Controllers
             if (post == null)
             {
                 return NotFound();
+            }
+
+            if(post.Image != null)  // add Line
+            {
+                var binary = Convert.ToBase64String(post.Image);  // add Line
+                var ext = Path.GetExtension(post.FileName);       // add Line
+                string imageDataURL = $"data:image/{ext};base64,{binary}";  // add Line
+                ViewData["Image"] = imageDataURL;   // add Line
             }
 
             return View(post);
@@ -102,7 +110,7 @@ namespace MVCBlogMK3.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BlogId,Title,Abstract,Content,Slug,Image,Created,Updated,IsPublished")] Post post, IFormFile image) //delete the Id in a create when it is scaffolded like this
+        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,IsPublished")] Post post, IFormFile image) //delete the Id in a create when it is scaffolded like this
         {
             if (ModelState.IsValid)
             {
@@ -151,7 +159,7 @@ namespace MVCBlogMK3.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,Slug,Image,Created,Updated,IsPublished")] Post post, IFormFile image) //add IformFile image
+        public async Task<IActionResult> Edit(int id, [Bind("BlogId,Title,Abstract,Content,IsPublished")] Post post, IFormFile image) //add IformFile image
         {
             if (id != post.Id)
             {

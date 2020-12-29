@@ -18,24 +18,26 @@
             <th>
                 @Html.DisplayNameFor(model => model.Abstract)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
+            <!--<th>
+                Html.DisplayNameFor(model => model.Content)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Slug)
+                Html.DisplayNameFor(model => model.Slug)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-            </th>
+            <th>-->
+                @*@Html.DisplayNameFor(model => model.Image)*@
+                 <!--<h3>This is the Model.FileName image</h3>
+            <img src="ViewBag.Image" alt="Model.FileName" />
+            </th>-->
             <th>
                 @Html.DisplayNameFor(model => model.Created)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Updated)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.IsPublished)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Blogs)
             </th>
@@ -55,21 +57,21 @@
                 @*@Html.DisplayFor(modelItem => item.Content)*@
                 @Html.Raw(item.Content) @*//change for TinyMCE to take care of this area*@
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Slug)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Image)
-            </td>
-            <td>
+            </td>*@
+            <!--<td>-->
+                @*@Html.DisplayFor(modelItem => item.Image)*@
+            <!--</td>-->
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Created)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Updated)
-            </td>
-            <td>
+            </td>*@
+            @*<td>
                 @Html.DisplayFor(modelItem => item.IsPublished)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Blogs.Id)
             </td>
