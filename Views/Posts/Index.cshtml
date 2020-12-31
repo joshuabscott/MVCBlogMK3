@@ -1,4 +1,5 @@
-﻿@model IEnumerable<MVCBlogMK3.Models.Post>
+﻿@using MVCBlogMK3.Utilities
+@model IEnumerable<MVCBlogMK3.Models.Post>
 
 @{
     ViewData["Title"] = "Post";
@@ -18,17 +19,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.Abstract)
             </th>
-            <!--<th>
+            <th>
                 Html.DisplayNameFor(model => model.Content)
             </th>
-            <th>
-                Html.DisplayNameFor(model => model.Slug)
-            </th>
-            <th>-->
-                @*@Html.DisplayNameFor(model => model.Image)*@
-                 <!--<h3>This is the Model.FileName image</h3>
-            <img src="ViewBag.Image" alt="Model.FileName" />
-            </th>-->
+            
             <th>
                 @Html.DisplayNameFor(model => model.Created)
             </th>
@@ -41,7 +35,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Blogs)
             </th>
-            <th></th>
+            <th>Settings</th>
         </tr>
     </thead>
     <tbody>
@@ -60,9 +54,9 @@
             @*<td>
                 @Html.DisplayFor(modelItem => item.Slug)
             </td>*@
-            <!--<td>-->
-                @*@Html.DisplayFor(modelItem => item.Image)*@
-            <!--</td>-->
+            <td>
+                <img src="@ImageUtility.GetImage(item)"/>
+            </td>
             @*<td>
                 @Html.DisplayFor(modelItem => item.Created)
             </td>

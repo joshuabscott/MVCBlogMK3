@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 
+    <!--CSS for jQuery DataTables-->
+    <link href="//cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" />
 
 </head>
 <body>
@@ -24,9 +26,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                        @*<li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            </li>*@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Blogs" asp-action="Index">All Blogs</a>
                         </li>
@@ -44,10 +46,21 @@
             </div>
         </nav>
     </header>
+
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
+    </div>
+
+    <div class="col-xl-3 col-lg-3 col-md-12">
+        <h6 class="m-b30 footer-title"><span>Subscribe</span></h6>
+        <ul class="d-flex widget-social-ic">
+            <li><a href="https://www.linkedin.com/in/joshgreatscott" target="_blank" class="site-button-link"><i class="fa fa-linkedin"></i></a></li>
+            <li><a href="https://twitter.com/JoshuaBscott" target="_blank" class="site-button-link"><i class="fa fa-twitter"></i></a></li>
+            <li><a href="https://github.com/joshuabscott" target="_blank" class="site-button-link"><i class="fa fa-github"></i></a></li>
+        </ul>
     </div>
 
     <footer class="border-top footer text-muted">
@@ -59,19 +72,27 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-    <!--Tiny MCE Script-->
+    <!-- CSS for jQuery DataTables-->
+    <script src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js" type="text/javascript" charset="utf8"></script>
+
+    <!--Tiny MCE & DataTables Script-->
     <script src="https://cdn.tiny.cloud/1/3lwulzgbibotwwht2k2991x7r701wvjdbqxtg24b43c6z3sk/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
-        tinymce.init({
-            selector: '#Content',
-            branding: false,
-            skin: 'fabric',
-            content_css: 'fabric',
-            toolbar_mode: 'floating',
-            plugins: 'advlist anchor autolink charmap code codesample directionality fullpage help hr image imagetools insertdatetime link lists media nonbreaking pagebreak preview print searchreplace table template textpattern toc visualblocks visualchars wordcount',
-            toolbar: 'undo redo | formatselect | bold italic strikethrough forecolor backcolor blockquote | link image media | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent | removeformat',
-            height: 400
-        });
+        $(document).ready(function () {
+            //TinyMCE
+            tinymce.init({
+                selector: '#Content',
+                branding: false,
+                skin: 'fabric',
+                content_css: 'fabric',
+                toolbar_mode: 'floating',
+                plugins: 'advlist anchor autolink charmap code codesample directionality fullpage help hr image imagetools insertdatetime link lists media nonbreaking pagebreak preview print searchreplace table template textpattern toc visualblocks visualchars wordcount',
+                toolbar: 'undo redo | formatselect | bold italic strikethrough forecolor backcolor blockquote | link image media | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent | removeformat',
+                height: 400
+            });
+            //DataTables
+            $('table').DataTable();
+        })
     </script>
 
     @RenderSection("Scripts", required: false)

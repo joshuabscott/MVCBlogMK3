@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MVCBlogMK3.Data;
 using MVCBlogMK3.Models;
+using MVCBlogMK3.Utilities;
 
 namespace MVCBlogMK3.Controllers
 {
@@ -68,19 +69,24 @@ namespace MVCBlogMK3.Controllers
                 return NotFound();
             }
 
-            if(post.Image != null)  // add Line
+            //if(post.Image != null)  // add Line
+            //{
+            //    var binary = Convert.ToBase64String(post.Image);  // add Line
+            //    var ext = Path.GetExtension(post.FileName);       // add Line
+            //    string imageDataURL = $"data:image/{ext};base64,{binary}";  // add Line
+            //    ViewData["Image"] = imageDataURL;   // add Line
+            //}
+
+            if(post.Image != null)
             {
-                var binary = Convert.ToBase64String(post.Image);  // add Line
-                var ext = Path.GetExtension(post.FileName);       // add Line
-                string imageDataURL = $"data:image/{ext};base64,{binary}";  // add Line
-                ViewData["Image"] = imageDataURL;   // add Line
+                ViewData["Image"] = ImageUtility.GetImage(post);
             }
 
             return View(post);
         }
 
         // GET: Posts/Create ----------------------------Heavily modified
-        public IActionResult Create(int? id)
+        public async Task<IActionResult> Create(int? id)
         {
             if (id == null)// add Line
             {
