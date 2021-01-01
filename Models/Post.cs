@@ -9,18 +9,23 @@ namespace MVCBlogMK3.Models
     public class Post
     {
         //The actual post written about a topic or what ever
+
+        //Keys
         public int Id { get; set; }
         public int BlogId { get; set; } //Foreign Key to Parent
 
+        //Describe the things that a blog post have
         public string Title { get; set; }
         public string Abstract { get; set; }
         public string Content { get; set; }
 
-        [Display(Name="File Name")]
-        public string FileName { get; set; } //-> You will need to do Add-Migration & Update-Database. 10/23 Image UPloader
         public string Slug { get; set; } //Use the Title to Identity instead of the Id, will cover - ?? //routing engine and SEO??
 
+        [Display(Name = "File Name")]
+        public string FileName { get; set; } //-> You will need to do Add-Migration & Update-Database. 10/23 Image UPloader
         public byte[] Image { get; set; }
+        public string ImageDataUrl { get; set; }
+
         public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }
 

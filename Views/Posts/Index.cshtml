@@ -1,5 +1,6 @@
 ﻿@using MVCBlogMK3.Utilities
-@model IEnumerable<MVCBlogMK3.Models.Post>
+@using MVCBlogMK3.Models
+@model IEnumerable<Post>
 
 @{
     ViewData["Title"] = "Post";
@@ -20,18 +21,17 @@
                 @Html.DisplayNameFor(model => model.Abstract)
             </th>
             <th>
-                Html.DisplayNameFor(model => model.Content)
+                @Html.DisplayNameFor(model => model.Content)
             </th>
-            
             <th>
                 @Html.DisplayNameFor(model => model.Created)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Updated)
             </th>
-            @*<th>
+            <th>
                 @Html.DisplayNameFor(model => model.IsPublished)
-            </th>*@
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Blogs)
             </th>
@@ -48,26 +48,22 @@
                 @Html.DisplayFor(modelItem => item.Abstract)
             </td>
             <td>
-                @*@Html.DisplayFor(modelItem => item.Content)*@
-                @Html.Raw(item.Content) @*//change for TinyMCE to take care of this area*@
+                @Html.Raw(item.Content)
             </td>
             @*<td>
-                @Html.DisplayFor(modelItem => item.Slug)
+                @Html.DisplayFor(modelItem => item.Image)
             </td>*@
             <td>
-                <img src="@ImageUtility.GetImage(item)"/>
-            </td>
-            @*<td>
                 @Html.DisplayFor(modelItem => item.Created)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Updated)
-            </td>*@
-            @*<td>
-                @Html.DisplayFor(modelItem => item.IsPublished)
-            </td>*@
+            </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Blogs.Id)
+                @Html.DisplayFor(modelItem => item.IsPublished)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Blogs.Name)
             </td>
             <td>
                 <a asp-controller="Posts" asp-action="BlogPosts" asp-route-id="@item.Id">BlogPosts</a> |

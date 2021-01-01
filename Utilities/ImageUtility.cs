@@ -10,12 +10,40 @@ namespace MVCBlogMK3.Utilities
 {
     public class ImageUtility //when you write a class there is now a type of ImageUtility
     {
-        public static string GetImage(Post post/*, IFormFile image*/) //inside the type of ImageUtility there is 
+        public static byte[] EncodeImage(IFormFile image)
         {
-            var binary = Convert.ToBase64String(post.Image);
-            var ext = Path.GetExtension(post.FileName);
-            //post.Image = $"data:image/{ext};base64,{binary}";
-            return $"data:image/{ext};base64,{binary}";
+            // This is entry level code that turn our image into a storable format in the DB
+            var ms = new MemoryStream();
+            image.CopyTo(ms);   //image is going to st
+            var output = ms.ToArray();
+
+            ms.Close(); //MS = Memory Stream clean up,  garbage collecting
+            ms.Dispose();   //MS = Memory Stream clean up,  garbage collecting
+
+            return output;
         }
+
+        public static string DecodeImage(byte[] image, string fileName)
+        {
+            var binary = Convert.ToBase64String(image);
+            var ext = Path.GetExtension(fileName);
+            string imageDataURL = $"data:image/{ext};base64,{binary}";
+            return imageDataURL;
+        }
+
+        //public string GetImage(Post post, IFormFile image) //inside the type of ImageUtility there is 
+        //{
+        //    if (post != null)
+        //    {
+        //        if (post.Image != null)
+        //        {
+        //            var binary = Convert.ToBase64String(post.Image);
+        //            var ext = Path.GetExtension(post.FileName);
+        //            string imageDataURL = $"data:image/{ext};base64,{binary}";
+        //            return imageDataURL;
+        //        }
+        //    }
+        //    return String.Empty;
+        //}
     }
 }

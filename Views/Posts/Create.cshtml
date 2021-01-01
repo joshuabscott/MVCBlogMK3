@@ -44,31 +44,17 @@
                 <input asp-for="Content" class="form-control" />
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
-                    <label asp-for="Slug" class="control-label"></label>
-                    <input asp-for="Slug" class="form-control" />
-                    <span asp-validation-for="Slug" class="text-danger"></span>
-                </div>*@
+            
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsPublished" /> @Html.DisplayNameFor(model => model.IsPublished)
                 </label>
             </div>
             <div class="form-group">
-                <label asp-for="FileName" class="control-label"></label><br /> @*//change from text to file 10/23 Image UPlader*@
-                <input asp-for="Image" type="file" /> @*//change from text to file 10/23 Image UPlader*@
-                @*<span asp-validation-for="FileName" class="text-danger"></span>*@
+                <label asp-for="FileName" class="control-label"></label>@*//change from text to file 10/23 Image UPlader*@
+                <input asp-for="Image" type="file" class="form-control" /> @*//change from text to file 10/23 Image UPlader*@
             </div>
-            @*<div class="form-group">
-                    <label asp-for="Created" class="control-label"></label>
-                    <input asp-for="Created" class="form-control" />
-                    <span asp-validation-for="Created" class="text-danger"></span>
-                </div>*@
-            @*<div class="form-group">
-                    <label asp-for="Updated" class="control-label"></label>
-                    <input asp-for="Updated" class="form-control" />
-                    <span asp-validation-for="Updated" class="text-danger"></span>
-                </div>*@
+            
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

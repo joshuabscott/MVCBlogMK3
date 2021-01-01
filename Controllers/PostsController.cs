@@ -44,9 +44,7 @@ namespace MVCBlogMK3.Controllers
             return View(blogPosts);
         }
 
-
-
-        // GET: Posts
+        // GET: Posts Index
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Posts.Include(p => p.Blogs);
@@ -69,24 +67,11 @@ namespace MVCBlogMK3.Controllers
                 return NotFound();
             }
 
-            //if(post.Image != null)  // add Line
-            //{
-            //    var binary = Convert.ToBase64String(post.Image);  // add Line
-            //    var ext = Path.GetExtension(post.FileName);       // add Line
-            //    string imageDataURL = $"data:image/{ext};base64,{binary}";  // add Line
-            //    ViewData["Image"] = imageDataURL;   // add Line
-            //}
-
-            if(post.Image != null)
-            {
-                ViewData["Image"] = ImageUtility.GetImage(post);
-            }
-
             return View(post);
         }
 
         // GET: Posts/Create ----------------------------Heavily modified
-        public async Task<IActionResult> Create(int? id)
+        public IActionResult Create(int? id)
         {
             if (id == null)// add Line
             {
@@ -94,7 +79,7 @@ namespace MVCBlogMK3.Controllers
             }
             else
             {
-                var blog = _context.Blogs.Find(id);// add Line
+                var blog = _context.Blogs.FindAsync(id);// add Line
                 if (blog == null)// add Line
                 {
                     return NotFound();// add Line
@@ -104,7 +89,7 @@ namespace MVCBlogMK3.Controllers
                 {
                     BlogId = (int)id  // add Line
                 };
-                ViewData["BlogName"] = blog.Name;   // add Line
+                ViewData["BlogName"] = blog;   // add Line
                 ViewData["BlogId"] = id;           // add Line
                 return View(newPost);
             }
@@ -127,19 +112,14 @@ namespace MVCBlogMK3.Controllers
                 if(image != null)
                 {
                     post.FileName = image.FileName;
-                    var ms = new MemoryStream();
-                    image.CopyTo(ms);
-                    post.Image = ms.ToArray();
-
-                    ms.Close();
-                    ms.Dispose();
+                    post.Image = ImageUtility.EncodeImage(image);
                 }
 
                 _context.Add(post);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Id", post.BlogId);
+            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
             return View(post);
         }
 
@@ -156,7 +136,7 @@ namespace MVCBlogMK3.Controllers
             {
                 return NotFound();
             }
-            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Id", post.BlogId);
+            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
             return View(post);
         }
 
@@ -176,6 +156,14 @@ namespace MVCBlogMK3.Controllers
             {
                 try
                 {
+                    post.Updated = DateTime.Now;
+
+                    if (image != null)//add line
+                    {
+                        post.FileName = image.FileName;
+                        post.Image = ImageUtility.EncodeImage(image);
+                    }
+                    
                     _context.Update(post);
                     await _context.SaveChangesAsync();
                 }
