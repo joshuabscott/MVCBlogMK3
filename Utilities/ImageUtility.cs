@@ -8,7 +8,7 @@ using MVCBlogMK3.Models;
 
 namespace MVCBlogMK3.Utilities
 {
-    public class ImageUtility //when you write a class there is now a type of ImageUtility
+    public static class ImageUtility //when you write a class there is now a type of ImageUtility
     {
         public static byte[] EncodeImage(IFormFile image)
         {
@@ -23,10 +23,10 @@ namespace MVCBlogMK3.Utilities
             return output;
         }
 
-        public static string DecodeImage(byte[] image, string fileName)
+        public static string DecodeImage(Post post)
         {
-            var binary = Convert.ToBase64String(image);
-            var ext = Path.GetExtension(fileName);
+            var binary = Convert.ToBase64String(post.Image);
+            var ext = Path.GetExtension(post.FileName);
             string imageDataURL = $"data:image/{ext};base64,{binary}";
             return imageDataURL;
         }

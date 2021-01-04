@@ -67,11 +67,16 @@ namespace MVCBlogMK3.Controllers
                 return NotFound();
             }
 
+            if (post.Image != null && post.Image.Length > 0)
+            {
+                ViewData["Image"] = ImageUtility.DecodeImage(post);
+            }
+
             return View(post);
         }
 
         // GET: Posts/Create ----------------------------Heavily modified
-        public IActionResult Create(int? id)
+        public async Task<IActionResult> Create(int? id)
         {
             if (id == null)// add Line
             {
@@ -160,11 +165,11 @@ namespace MVCBlogMK3.Controllers
 
                     if (image != null)//add line
                     {
-                        post.FileName = image.FileName;
-                        post.Image = ImageUtility.EncodeImage(image);
+                        post.FileName = image.FileName;//add line
+                        post.Image = ImageUtility.EncodeImage(image);//add line
                     }
                     
-                    _context.Update(post);
+                    _context.Update(post); 
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -198,6 +203,11 @@ namespace MVCBlogMK3.Controllers
             if (post == null)
             {
                 return NotFound();
+            }
+
+            if (post.Image != null && post.Image.Length > 0)
+            {
+                ViewData["Image"] = ImageUtility.DecodeImage(post);
             }
 
             return View(post);
