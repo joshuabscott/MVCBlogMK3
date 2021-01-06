@@ -47,27 +47,40 @@ namespace MVCBlogMK3.Controllers
         }
 
         // GET: Comments/Create
-        public IActionResult Create()
-        {
-            ViewData["BlogUserId"] = new SelectList(_context.BlogUsers, "Id", "Id");
-            ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Id");
-            return View();
-        }
+        //public IActionResult Create()
+        //{
+        //    ViewData["BlogUserId"] = new SelectList(_context.BlogUsers, "Id", "Id");
+        //    ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Id");
+        //    return View();
+        //}
 
         // POST: Comments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // To protect from over-posting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PostId,BlogUserId,Content,Created,Updated")] Comment comment)
+        public async Task<IActionResult> Create([Bind("PostId,Content")] Comment comment)
         {
             if (ModelState.IsValid)
             {
+                var email = HttpContext.User.Identity.Name;
+                var blogUserId = _context.Users.FirstOrDefault(u => u.Email == email).Id;
+                var blogUser = _context.Users.FirstOrDefault(u => u.Email == email);
+                var post = _context.Posts.FirstOrDefault(p => p.Id == comment.PostId);
+
+                comment.Created = DateTime.Now;
+                comment.Updated = DateTime.Now;
+                //comment.Content = userComment;
+                comment.BlogUserId = blogUserId;
+                comment.BlogUser = blogUser;
+                comment.Posts = post;
+
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return Redirect($"~/Posts/Details/{comment.PostId}");
+                return RedirectToAction("Details", "Posts", new { id = comment.PostId });
             }
-            ViewData["BlogUserId"] = new SelectList(_context.BlogUsers, "Id", "Id", comment.BlogUserId);
+            ViewData["Id"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id", comment.BlogUserId);
             ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Id", comment.PostId);
             return View(comment);
         }
@@ -85,8 +98,8 @@ namespace MVCBlogMK3.Controllers
             {
                 return NotFound();
             }
-            ViewData["BlogUserId"] = new SelectList(_context.BlogUsers, "Id", "Id", comment.BlogUserId);
-            ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Id", comment.PostId);
+            ViewData["BlogUserId"] = new SelectList(_context.BlogUsers, "Id", "DisplayName", comment.BlogUserId);
+            ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Title", comment.PostId);
             return View(comment);
         }
 
