@@ -83,8 +83,9 @@
         <form asp-controller="Comments" asp-action="Create">
             @Html.Hidden("PostId", Model.Id) @* primary key of post *@
             <div class="form-group">
-                <textarea name="userComment" class="form-control" rows="3" placeholder="Add a comment..."></textarea>
+                <textarea name="Content" class="form-control" rows="3" placeholder="Add a comment..."></textarea>
             </div>
+
             @if (User.Identity.IsAuthenticated)
             {
                 <button type="submit" class="btn btn-primary">Submit</button>

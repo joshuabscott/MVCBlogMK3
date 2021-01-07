@@ -1,8 +1,79 @@
-﻿@{
+﻿@model MVCBlogMK3.Models.ViewModels.PostIndexVM
+@using MVCBlogMK3.Utilities
+@{
     ViewData["Title"] = "Home Page";
+    Layout = "_HomeLayout";
+    ViewData["IncludeHeader"] = "true";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome to My 3rd Blog Creation</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<div class="column is-8">
+
+    <!-- Blog post -->
+    @foreach (var post in Model.Posts)
+    {
+        <div class="is-post light-bordered">
+            <div class="featured-post-image">
+                @if (post.Image != null)
+                {
+                    <img src="@ImageUtility.DecodeImage(post)" alt="">
+                }
+
+                <div class="post-date">
+                    <div class="post-date-inner">
+                        <span>@post.Created.ToString("MMM")</span>
+                        <span>@post.Created.ToString("dd")</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="featured-post-body">
+                <div class="featured-post-title">
+                    <div class="title-avatar">
+                        <img src="~/josh_picture.jpg" alt=""
+                             data-demo-src="assets/img/avatars/alan.jpg">
+                    </div>
+                    <div class="title-meta">
+                        <h2 class="post-title">@post.Title</h2>
+                        <h4 class="post-subtitle">
+                            <span>by <a class="author-name" href="#">Joshua Peters</a></span>
+                            <i class="fa fa-circle"></i>
+                            <span>Posted in <a asp-controller="Home" asp-action="Category" asp-route-id="@post.BlogId">@post.Blogs.Name</a></span>
+                        </h4>
+                    </div>
+                </div>
+                <p>
+                    @post.Abstract
+                </p>
+
+                <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id">
+                    Read More <span>&#10230;</span>
+                </a>
+            </div>
+        </div>
+    }
+
+    <div class="load-more has-text-centered">
+        @if (!Model.PagesBehind)
+        {
+            <button class="button button-cta" disabled>Prev</button>
+        }
+        else
+        {
+            <a asp-controller="Home" asp-action="Index" asp-route-page="@Html.Raw($"{Model.PageNum - 1}")" class="button button-cta">Prev</a>
+        }
+
+        @if (!Model.PagesInFront)
+        {
+            <button class="button button-cta" disabled>Next</button>
+        }
+        else
+        {
+            <a asp-controller="Home" asp-action="Index" asp-route-page="@Html.Raw($"{Model.PageNum + 1}")" class="button button-cta">Next</a>
+        }
+    </div>
 </div>

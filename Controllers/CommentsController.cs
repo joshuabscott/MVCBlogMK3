@@ -46,7 +46,7 @@ namespace MVCBlogMK3.Controllers
             return View(comment);
         }
 
-        // GET: Comments/Create
+        // GET: Comments/Create-----------------------------Delete here and the Create View in Comments---- moving to Details of  Posts
         //public IActionResult Create()
         //{
         //    ViewData["BlogUserId"] = new SelectList(_context.BlogUsers, "Id", "Id");
@@ -70,7 +70,7 @@ namespace MVCBlogMK3.Controllers
 
                 comment.Created = DateTime.Now;
                 comment.Updated = DateTime.Now;
-                comment.Content = comment;
+                //comment.Content = content;
                 comment.BlogUserId = blogUserId;
                 comment.BlogUser = blogUser;
                 comment.Posts = post;
