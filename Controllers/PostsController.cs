@@ -51,7 +51,7 @@ namespace MVCBlogMK3.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Posts/Details/5  -----------------------------------------------------------------------------
+        // GET: Posts/Details/5  ----------------------------------Add Comments and Images
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -61,12 +61,19 @@ namespace MVCBlogMK3.Controllers
 
             var post = await _context.Posts
                 .Include(p => p.Blogs)
+                .Include(p => p.Comments) // Add Comments
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (post == null)
             {
                 return NotFound();
             }
+            // for each comment load author/BlogUser
+            foreach(var comment in post.Comments.ToList())
+            {
+                comment.BlogUser = await _context.Users.FindAsync(comment.BlogUserId);
+            }
 
+            // retrieve image and decode for view
             if (post.Image != null && post.Image.Length > 0)
             {
                 ViewData["Image"] = ImageUtility.DecodeImage(post);

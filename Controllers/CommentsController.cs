@@ -70,7 +70,7 @@ namespace MVCBlogMK3.Controllers
 
                 comment.Created = DateTime.Now;
                 comment.Updated = DateTime.Now;
-                //comment.Content = userComment;
+                comment.Content = comment;
                 comment.BlogUserId = blogUserId;
                 comment.BlogUser = blogUser;
                 comment.Posts = post;
