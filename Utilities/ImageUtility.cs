@@ -31,19 +31,5 @@ namespace MVCBlogMK3.Utilities
             return imageDataURL;
         }
 
-        //public string GetImage(Post post, IFormFile image) //inside the type of ImageUtility there is 
-        //{
-        //    if (post != null)
-        //    {
-        //        if (post.Image != null)
-        //        {
-        //            var binary = Convert.ToBase64String(post.Image);
-        //            var ext = Path.GetExtension(post.FileName);
-        //            string imageDataURL = $"data:image/{ext};base64,{binary}";
-        //            return imageDataURL;
-        //        }
-        //    }
-        //    return String.Empty;
-        //}
     }
 }

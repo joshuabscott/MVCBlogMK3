@@ -29,10 +29,12 @@ namespace MVCBlogMK3
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //1. services are configured for using DbContext
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
+            //2. using directive for injection using IdentityRole with BlogUser
             services.AddIdentity</*IdentityUser*/BlogUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false) //Step 2 Add BlogUser, Identity Role
                 .AddEntityFrameworkStores<ApplicationDbContext>()                                                     //-----true = scaffolded to start, false = changed to for building?,
                 .AddDefaultUI()//Step 2 Add
