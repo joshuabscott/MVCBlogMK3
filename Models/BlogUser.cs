@@ -29,7 +29,7 @@ namespace MVCBlogMK3.Models
         public BlogUser()
         {
             Comments = new HashSet<Comment>();
-            DisplayName = "New User";
+            //DisplayName = "New User";
             //this.
         }
     }

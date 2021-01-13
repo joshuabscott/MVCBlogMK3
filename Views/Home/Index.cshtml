@@ -1,8 +1,7 @@
-﻿@model MVCBlogMK3.Models.ViewModels.PostIndexVM
+﻿@model MVCBlogMK3.Models.ViewModels.BlogPostsVM
 @using MVCBlogMK3.Utilities
 @{
     ViewData["Title"] = "Home Page";
-    Layout = "_HomeLayout";
     ViewData["IncludeHeader"] = "true";
 }
 
@@ -57,23 +56,5 @@
         </div>
     }
 
-    <div class="load-more has-text-centered">
-        @if (!Model.PagesBehind)
-        {
-            <button class="button button-cta" disabled>Prev</button>
-        }
-        else
-        {
-            <a asp-controller="Home" asp-action="Index" asp-route-page="@Html.Raw($"{Model.PageNum - 1}")" class="button button-cta">Prev</a>
-        }
-
-        @if (!Model.PagesInFront)
-        {
-            <button class="button button-cta" disabled>Next</button>
-        }
-        else
-        {
-            <a asp-controller="Home" asp-action="Index" asp-route-page="@Html.Raw($"{Model.PageNum + 1}")" class="button button-cta">Next</a>
-        }
-    </div>
+    
 </div>
