@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using MVCBlogMK3.Data;
 using MVCBlogMK3.Models;
 
@@ -47,19 +50,19 @@ namespace MVCBlogMK3.Controllers
         }
 
         // GET: Comments/Create-----------------------------Delete here and the Create View in Comments---- moving to Details of  Posts
-        //public IActionResult Create()
-        //{
-        //    ViewData["BlogUserId"] = new SelectList(_context.BlogUsers, "Id", "Id");
-        //    ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Id");
-        //    return View();
-        //}
+        public IActionResult Create()
+        {
+            ViewData["BlogUserId"] = new SelectList(_context.BlogUsers, "Id", "Id");
+            ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Id");
+            return View();
+        }
 
         // POST: Comments/Create
         // To protect from over-posting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PostId,Content")] Comment comment)
+        public async Task<IActionResult> Create([Bind("PostId,Content")] Comment comment, string userComment)
         {
             if (ModelState.IsValid)
             {
@@ -70,7 +73,7 @@ namespace MVCBlogMK3.Controllers
 
                 comment.Created = DateTime.Now;
                 comment.Updated = DateTime.Now;
-                //comment.Content = content;
+                comment.Content = userComment;
                 comment.BlogUserId = blogUserId;
                 comment.BlogUser = blogUser;
                 comment.Posts = post;
@@ -104,11 +107,11 @@ namespace MVCBlogMK3.Controllers
         }
 
         // POST: Comments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // To protect from over-posting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PostId,BlogUserId,Content,Created,Updated")] Comment comment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,PostId,BlogUserId,Body,Created,Updated")] Comment comment)
         {
             if (id != comment.Id)
             {
@@ -119,6 +122,15 @@ namespace MVCBlogMK3.Controllers
             {
                 try
                 {
+                    if (comment.Content.Contains("<!DOCTYPE"))
+                    {
+                        XmlDocument doc = new XmlDocument();
+                        doc.LoadXml(comment.Content);
+                        XmlNode elem = doc.DocumentElement.FirstChild.NextSibling;
+                        comment.Content = elem.FirstChild.InnerText.ToString();
+                    }
+                    comment.Posts = _context.Posts.FirstOrDefault(p => p.Id == comment.PostId);
+                    comment.BlogUser = _context.Users.FirstOrDefault(u => u.Id == comment.BlogUserId);
                     _context.Update(comment);
                     await _context.SaveChangesAsync();
                 }
@@ -133,11 +145,13 @@ namespace MVCBlogMK3.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Posts", new { id = comment.PostId });
             }
-            ViewData["BlogUserId"] = new SelectList(_context.BlogUsers, "Id", "Id", comment.BlogUserId);
+            ViewData["BlogUserId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id", comment.BlogUserId);
             ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Id", comment.PostId);
-            return View(comment);
+            //return View(comment);
+            return RedirectToAction("Details", "Posts", new { id = comment.PostId });
         }
 
         // GET: Comments/Delete/5
