@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace MVCBlogMK3.Models
 {
-    //We fight for the User! Tron quotes. This gives the User "Super" Identity powers
-    //Chile inherits from the parent/base class. All of the abilities plus a few more from the User
+    //Child inherits from the parent/base class. All of the abilities plus a few more from the User
 
     public class BlogUser : IdentityUser
     {
+        #region BlogUser
         //I will stop before I even hit the controller if I don't have these fields filled
         [Required]
-        //I will check for the total length of the string so this is not fool proof
+        //I will check for the total length of the string so this is fool + beginner hacker proof
         [StringLength(50)]
         public string FirstName { get; set; }
 
@@ -31,6 +31,11 @@ namespace MVCBlogMK3.Models
             Comments = new HashSet<Comment>();
             //DisplayName = "New User";
             //this.
+
         }
+        #endregion
+
+        #region Navigation
+        #endregion
     }
 }

@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace MVCBlogMK3.Models
 {
-    public class Post
+    public class Post       //The actual post written about a topic or what ever
     {
-        //The actual post written about a topic or what ever
-
         //Keys
+        #region Keys 
         public int Id { get; set; }
         public int BlogId { get; set; } //Foreign Key to Parent
+        #endregion
 
         //Describe the things that a blog post have
+        #region Post Properties
         public string Title { get; set; }
         public string Abstract { get; set; }
         public string Content { get; set; }
@@ -30,13 +31,15 @@ namespace MVCBlogMK3.Models
         public DateTime? Updated { get; set; }
 
         public bool IsPublished { get; set; }
+        #endregion
 
         //In Microsoft documentation this is written public Type type
+        #region Navigation
         public virtual Blog Blogs { get; set; }
-
         //In Microsoft docs this is public List<Type> Type
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Tag> Tags { get; set; }
+        #endregion
 
         //This tells the code to do what I type:
         //var post = Post();

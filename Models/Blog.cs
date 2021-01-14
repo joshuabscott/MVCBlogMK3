@@ -7,17 +7,24 @@ namespace MVCBlogMK3.Models
 {
     public class Blog
     {
-        //Catalog or catagory of blogs grouped
+        //This is intended for categorization of posts
+        #region Keys
+        //Catalog or category of blog grouped
         public int Id { get; set; }
+        #endregion
+
+        #region Blog Properties
         public string Name { get; set; }
         public string Url { get; set; }
+        #endregion
 
-        //public List<Post> Posts { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
-
         public Blog()
         {
             Posts = new HashSet<Post>();
         }
+
+        #region Navigation
+        #endregion
     }
 }
