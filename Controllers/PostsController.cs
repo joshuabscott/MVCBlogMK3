@@ -4,6 +4,7 @@ using System.IO;  //MemoryStream
 using System.Linq;
 using System.Text.RegularExpressions; //Regex.Replace
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,6 +15,7 @@ using MVCBlogMK3.Utilities;
 
 namespace MVCBlogMK3.Controllers
 {
+    [Authorize(Roles = "Administrator, Moderator")]
     public class PostsController : Controller
     {
         private readonly ApplicationDbContext _context;

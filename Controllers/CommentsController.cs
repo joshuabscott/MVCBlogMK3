@@ -13,6 +13,7 @@ using MVCBlogMK3.Models;
 
 namespace MVCBlogMK3.Controllers
 {
+    [Authorize(Roles = "Administrator, Moderator")]
     public class CommentsController : Controller
     {
         private readonly ApplicationDbContext _context;

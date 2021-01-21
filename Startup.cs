@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MVCBlogMK3.Data;
 using MVCBlogMK3.Models;
+using MVCBlogMK3.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,9 @@ namespace MVCBlogMK3
                 .AddEntityFrameworkStores<ApplicationDbContext>()                                                     //-----true = scaffolded to start, false = changed to for building?,
                 .AddDefaultUI()//Step 2 Add
                 .AddDefaultTokenProviders();//Step 2 Add
+
+            //3. instance of SeedUtility to be available as an injected dependency
+            //services.AddTransient<SeedUtility>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
