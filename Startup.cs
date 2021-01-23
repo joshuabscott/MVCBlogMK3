@@ -32,8 +32,14 @@ namespace MVCBlogMK3
         {
             //1. services are configured for using DbContext
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(//switched from defualt, to use NPGSql
+                DataUtility.GetConnectionString(Configuration)));//switch configuration to DataUtility from Default
+            //Step 4: Update provider to UseNpgsql
+            //The original code block for configuring the provider can be found in the ConfigureServices method of the Startup class. By default, 
+            //it uses MS SQL Server and gets the connection string directly from the application settings.
+            //Both of these aspects will now be changing to support dynamic connection string creation for PostgreSQL.In a previous step, 
+            //    we installed the Entity Framework Core provider and now it will be used to update the provider from SqlServer to Npgsql.
+            //When this step is complete you will have a configured service that knows how to talk to a local and a remote PostgreSQL database.
 
             //2. using directive for injection using IdentityRole with BlogUser
             services.AddIdentity</*IdentityUser*/BlogUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false) //Step 2 Add BlogUser, Identity Role
